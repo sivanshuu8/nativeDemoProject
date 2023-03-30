@@ -49,6 +49,11 @@ public class MainApplication extends Application implements ReactApplication {
     return mReactNativeHost;
   }
 
+    @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
+
   @Override
   public void onCreate() {
     super.onCreate();

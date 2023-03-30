@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
+import Search from "./Search";
 
 
 
@@ -29,40 +30,54 @@ export default App = () => {
         .catch((error) => console.log(error))
     }, [])
 
+    let arr1 = [];
+    let arr2 = [];
+
     //console.log(name);
 
     return(
 
-                <ScrollView >
+            
         <View style={styles.container}> 
-        <Text style={styles.header}>
-            Posts
-        </Text>
+                <Search name={name} />
+               
+            <TouchableOpacity>
+            <FlatList 
+                style={styles.Lists}
+                data={(title, name)}
+                renderItem={({item}) => { 
+                        title.map((title) => {
+                          
+                            if(item.id === title.id){
+                                
+                                
+                                    arr1 = item.username;
+                                    arr2 = title.title;
+                                
+ 
+                          }
+                        })
 
-                
-                    {name.map((name) => (
-                        <View key={name.id}>
-                        {title.map((title) => (
-
-                            <View style={styles.boxes} key={title.id}>
-                            <Text>
-                            {title.title.slice(0,50)+`...`}
-                                {'\n'}
+                        return(
+                            <View style={styles.boxes}>
+                                <View>
+                                <Text>
+                                    {arr2.slice(0,50)+`...`}
                                 </Text>
-                                <View >
                                 <Text style={styles.userName}>
-                                {name.username}
-                            </Text>
+                                    {arr1}
+                                </Text>
                             </View>
                             </View>
-                        ))}
-                        </View>
-                    ))}
-        </View>
-        </ScrollView>
+                          
+                        )
+                      
+                }}
+            />
+            </TouchableOpacity>
 
-       
-    
+        </View>
+          
        
     )
 }
@@ -73,7 +88,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#f3f3f3",
         height: 1000,
-        marginTop: 40,
+        marginTop: 10,
     },
     boxes: {
         padding: 10,
@@ -87,5 +102,8 @@ const styles = StyleSheet.create({
     header: {
         flex: 1,
         alignContent: 'center',
+    },
+    Lists: {
+        marginTop: 15
     }
 })
