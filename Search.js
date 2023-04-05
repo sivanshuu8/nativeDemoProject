@@ -1,55 +1,76 @@
 import { StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity} from "react-native";
-import {  useState  } from "react";
+import {  useState, useEffect  } from "react";
+import theTitle from './Posts'
+import { NavigationContainer } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 
+const URL2 = "https://jsonplaceholder.typicode.com/posts";
 
-const Search = ({ name }) => {
+const Search = ( {route} ) => {
 
-    const [term, setTerm] = useState('');
+    const [title, setTitle] = useState([]);
 
-    const a = name.map((usernames) => {
-        const {username} = usernames;
+    const { element } = route.params;
+      const selectedValue = JSON.stringify(element);
+  //  console.log(element);
+
+    useEffect(() => {
+        fetch(URL2)
+            .then((response) => response.json())
+            .then((json) => setTitle(json))
+            .catch((error) => console.log(error))
+    }, [])
+
+    //console.log(title);
         
-        return username;
-        
-    })
-    
+  
+let obj;
+   const filterFunction = function x(title) {
+    for(i=0; i < title.length ; i++){
 
-
-    return(
-        
-            <View style={styles.SearchContainer}>
-                <TextInput
-                 placeholder="Search" 
-                 style={styles.SearchBar} 
-                 autoCorrect={false}
-                 autoCapitalize="none"
-                 onChangeText={(text) => setTerm(text)}
-                 />
-                 {
-                //
+        if(title[i].title === element){
+            console.log('true')
+            obj = title[i];
             
-                a.filter((val) => {
-                    console.log(term);
-                    return term && val.toLowerCase().startsWith(term.toLowerCase());
-                })
-                .slice(0,5)
-                .map((namee) =>{
-                    console.log(namee);
-                    return (
-                        <TouchableOpacity>
-                            <View>
-                            <Text style={styles.Result}>
-                                {namee}
-                            </Text>
-                        </View>
-                        </TouchableOpacity>
-                    )
-                })
-                 }
-            </View>
-        
+           
+            return Object.entries(obj).map(([key, val]) => {
+                return(
+                    <View>
+                        <Text style={styles.Result}>
+                            <Text style={styles.key}>{key}
+                            </Text> : {val}</Text>
+                    </View>
+                )
+            });
+        }
+    }
+   }
+    const result = filterFunction(title);
+    // console.log(e);
+  
+
+   
+ 
+   // console.log(b);
+
+    return (
+      <>
+       <Text style={styles.searchedResult}>
+        The result you selected is :{selectedValue}
+       </Text>
+
+        <View>
+        <Text >
+            {result}
+       </Text>
+        </View>
+      </>
     )
+        
+           
+        
+    
 }
 
 const styles = StyleSheet.create({
@@ -64,20 +85,56 @@ const styles = StyleSheet.create({
         textTransform: 'lowercase'
     },
     Result:{
+        marginTop: 15,
         backgroundColor: '#fff',
-        fontSize: 18,
-        width: 325,
+        fontSize: 15,
+        alignSelf: 'center',
         marginHorizontal:15,
-        padding: 3,
+        padding: 5,
         borderColor: 'black',
-        borderWidth: 0.8
+        borderWidth: 0.3,
+        color: 'black',
+        borderRadius: 3,
     },
     SearchContainer: {
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'flex-start'
+    },
+    titleStyle:{
+        padding: 4,
+        backgroundColor: 'white',
+        margin: 2,
+       
+        
+        },
+    searchedResult: {
+        marginBottom: 15,
+        marginTop: 10,
+        alignSelf: 'center'
+    },
+    key : {
+        fontSize:17,
+        color: 'blue',
     }
 
 })
 
+/*  const { id } = val;
+            return id; */
+
 export default Search;
+
+/*
+    (
+            <View style={styles.titleStyle}>
+                <Text>
+                   {val}
+                </Text>
+            </View>
+        )
+*/
+
+/* 
+        style={styles.titleStyle}
+*/
