@@ -54,7 +54,7 @@ const Search = ({ name }) => {
 
 const styles = StyleSheet.create({
     SearchBar: {
-        backgroundColor: '#7b7c7a',
+        backgroundColor: '#7c7b7a',
         height: 50,
         alignSelf: 'stretch',
         padding: 10,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         marginHorizontal:15,
         padding: 3,
         borderColor: 'black',
-        borderWidth: 1
+        borderWidth: 0.8
     },
     SearchContainer: {
         marginTop: 10,

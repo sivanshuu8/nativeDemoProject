@@ -41,7 +41,7 @@ export default App = () => {
         <View style={styles.container}> 
                 <Search name={name} />
                
-            <TouchableOpacity>
+            
             <FlatList 
                 style={styles.Lists}
                 data={(title, name)}
@@ -59,7 +59,9 @@ export default App = () => {
                         })
 
                         return(
+                            
                             <View style={styles.boxes}>
+                                <TouchableOpacity>
                                 <View>
                                 <Text>
                                     {arr2.slice(0,50)+`...`}
@@ -68,13 +70,14 @@ export default App = () => {
                                     {arr1}
                                 </Text>
                             </View>
+                            </TouchableOpacity>
                             </View>
                           
                         )
                       
                 }}
             />
-            </TouchableOpacity>
+           
 
         </View>
           
