@@ -51,6 +51,15 @@ export default Posts = ({ navigation }) => {
         
     })
 
+    const displayName = name.map((val) => {
+            const { username } = val;
+            return <View style={styles.userName}>
+                <Text>
+                    {username}
+                </Text>
+            </View>
+    })
+
    
 
 
@@ -95,10 +104,12 @@ export default Posts = ({ navigation }) => {
                         }}
                         >
                             
-                            <View style={styles.boxes} key={el.id}>
+                        <View key={el.id} style={styles.boxes}>
                             <Text>
-                                {el}
+                                {el}                       
                             </Text>
+                            
+                            
                         </View>
                         </TouchableOpacity>
                     )

@@ -1,0 +1,11 @@
+import {NavigationContainer} from '@react-navigation/native';
+import { Text } from 'react-native';
+
+const UserPosts = () => {
+
+    return <Text>Sivanshu</Text>;
+       
+
+}
+
+export default UserPosts;

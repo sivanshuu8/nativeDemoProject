@@ -1,14 +1,30 @@
 import { StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity} from "react-native";
-import {  useState, useEffect  } from "react";
+import {  useState, useEffect, useContext  } from "react";
 import theTitle from './Posts'
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import UserContext from "./userContext";
 
 
 const URL2 = "https://jsonplaceholder.typicode.com/posts";
 
 const Search = ( {route} ) => {
 
+    const msg = useContext(UserContext);
+    const gettingUserVal = msg.map((v) => {
+        return v;
+    })
+
+   /*
+         const ccc = cc.map((v) => {
+        return v.id;
+    })
+   */
+    
+ 
+   // console.log(cc);
+
+ 
     const [title, setTitle] = useState([]);
 
     const { element } = route.params;
@@ -23,6 +39,35 @@ const Search = ( {route} ) => {
     }, [])
 
     //console.log(title);
+let obj2;
+    const newFunction = (title, gettingUserVal) => {
+        for(i=0; i<title.length; i++){
+            for(j=0; j<gettingUserVal.length; j++){
+                if(title[i].title === element){
+                    obj2 = title[i];
+                 const newVal = gettingUserVal.map((v) => {
+                        if(obj2.id === v.id){
+                            return v.username;
+                        }
+                    })
+                    const newVal2 = newVal.filter((el) => {
+                        return el !== undefined
+                    });
+                    return <View>
+                        <Text style={styles.Result}>
+                          <Text style={styles.key}>userName: </Text>{newVal2}
+                        </Text>
+                    </View>
+                }
+            }
+        }
+}
+
+ // newFunction(title, cc)
+
+
+
+
         
   
 let obj;
@@ -36,7 +81,7 @@ let obj;
            
             return Object.entries(obj).map(([key, val]) => {
                 return(
-                    <View>
+                    <View key={key}>
                         <Text style={styles.Result}>
                             <Text style={styles.key}>{key}
                             </Text> : {val}</Text>
@@ -59,7 +104,7 @@ let obj;
        <Text style={styles.searchedResult}>
         The result you selected is :{selectedValue}
        </Text>
-
+            {newFunction(title, gettingUserVal)}
         <View>
         <Text >
             {result}
