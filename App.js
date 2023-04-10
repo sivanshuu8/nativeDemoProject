@@ -14,6 +14,7 @@ const App = () => {
 
     const [name, setName] = useState([]);
 
+    // Posts api data fetching
     useEffect(() => {
         fetch(URL)
         .then((response) => response.json())
@@ -21,7 +22,9 @@ const App = () => {
         .catch((error) => console.log(error));
     }, [])
 
-    const a = name.map((val) => {
+
+    //saving the posts data as an obj
+    const data = name.map((val) => {
         const {username, id} = val;
         const obj = {
             username : username,
@@ -40,7 +43,7 @@ const App = () => {
 
     return(
         <NavigationContainer>
-             <UserContext.Provider value={a}>
+             <UserContext.Provider value={data}>
            <Stack.Navigator initialRouteName='Posts'>
                 <Stack.Screen  name="Posts" component={Posts}/>
                 <Stack.Screen  name="Search" component={Search}/>               

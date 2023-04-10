@@ -10,6 +10,7 @@ const URL2 = "https://jsonplaceholder.typicode.com/posts";
 
 const Search = ( {route} ) => {
 
+    //context data from App.js 
     const msg = useContext(UserContext);
     const gettingUserVal = msg.map((v) => {
         return v;
@@ -24,13 +25,13 @@ const Search = ( {route} ) => {
  
    // console.log(cc);
 
- 
     const [title, setTitle] = useState([]);
-
+    // posts data 
     const { element } = route.params;
       const selectedValue = JSON.stringify(element);
   //  console.log(element);
 
+  //User api call
     useEffect(() => {
         fetch(URL2)
             .then((response) => response.json())
@@ -40,13 +41,14 @@ const Search = ( {route} ) => {
 
     //console.log(title);
 let obj2;
+//function to match the user input to posts api and then to user api to get username
     const newFunction = (title, gettingUserVal) => {
         for(i=0; i<title.length; i++){
             for(j=0; j<gettingUserVal.length; j++){
                 if(title[i].title === element){
                     obj2 = title[i];
                  const newVal = gettingUserVal.map((v) => {
-                        if(obj2.id === v.id){
+                        if(obj2.userId === v.id){
                             return v.username;
                         }
                     })
@@ -71,6 +73,7 @@ let obj2;
         
   
 let obj;
+// function to match the user input with the data set and displaying the result
    const filterFunction = function x(title) {
     for(i=0; i < title.length ; i++){
 

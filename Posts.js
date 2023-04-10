@@ -15,10 +15,11 @@ const URL2 = "https://jsonplaceholder.typicode.com/posts"
 
 export default Posts = ({ navigation }) => {
 
-
+    //user search data
     const [term, setTerm] = useState('');
 
 
+    // Posts and User api data
     const [name, setName] = useState([]);
     const [title, setTitle] = useState([]);
 
@@ -43,14 +44,15 @@ export default Posts = ({ navigation }) => {
 
    // console.log(term);
 
-   
-    const a = title.map((titlee) => {
+   // saving post api data in a variable 
+    const post = title.map((titlee) => {
         const {title} = titlee;
         
         return title;
         
     })
 
+    // fn for testing 
     const displayName = name.map((val) => {
             const { username } = val;
             return <View style={styles.userName}>
@@ -77,10 +79,10 @@ export default Posts = ({ navigation }) => {
                     setTerm(text);
                  }, 500)}}
                 />
-                <View  key={a.id}>
+                <View  key={post.id}>
 
                 {
-                    a.filter((val) => {
+                    post.filter((val) => {
                         //console.log(term);
                         return val.toLowerCase().startsWith(term.toLowerCase());
                     })
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     SearchBar: {
-        backgroundColor: '#7c7b7a',
+        backgroundColor: '#fff',
         height: 50,
         alignSelf: 'stretch',
         padding: 10,
