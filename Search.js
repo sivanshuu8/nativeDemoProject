@@ -6,15 +6,22 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import UserContext from "./userContext";
 
 
-const URL2 = "https://jsonplaceholder.typicode.com/posts";
+
+// const URL2 = "https://jsonplaceholder.typicode.com/posts";
 
 const Search = ( {route} ) => {
 
     //context data from App.js 
-    const msg = useContext(UserContext);
-    const gettingUserVal = msg.map((v) => {
+    const { name, title } = useContext(UserContext);
+    const gettingUserVal = name.map((v) => {
         return v;
     })
+
+    /* const tester = title.map((v) => {
+        return v;
+    })
+   // console.log(tester); */
+
 
    /*
          const ccc = cc.map((v) => {
@@ -25,20 +32,14 @@ const Search = ( {route} ) => {
  
    // console.log(cc);
 
-    const [title, setTitle] = useState([]);
+   // const [title, setTitle] = useState([]);
     // posts data 
     const { element } = route.params;
       const selectedValue = JSON.stringify(element);
   //  console.log(element);
 
   //User api call
-    useEffect(() => {
-        fetch(URL2)
-            .then((response) => response.json())
-            .then((json) => setTitle(json))
-            .catch((error) => console.log(error))
-    }, [])
-
+ 
     //console.log(title);
 let obj2;
 //function to match the user input to posts api and then to user api to get username
@@ -67,9 +68,6 @@ let obj2;
 
  // newFunction(title, cc)
 
-
-
-
         
   
 let obj;
@@ -96,9 +94,7 @@ let obj;
    }
     const result = filterFunction(title);
     // console.log(e);
-  
 
-   
  
    // console.log(b);
 

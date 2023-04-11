@@ -4,13 +4,11 @@ import { createContext } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Search from "./Search";
+import UserContext from "./userContext";
 
 
 
-
-const theTitle = createContext();
-const URL = "https://jsonplaceholder.typicode.com/users";
-const URL2 = "https://jsonplaceholder.typicode.com/posts"
+//const theTitle = createContext();
 
 
 export default Posts = ({ navigation }) => {
@@ -18,29 +16,12 @@ export default Posts = ({ navigation }) => {
     //user search data
     const [term, setTerm] = useState('');
 
-
+    const { name, title } = useContext(UserContext);
     // Posts and User api data
-    const [name, setName] = useState([]);
-    const [title, setTitle] = useState([]);
+  //  const [name, setName] = useState([]);
+  //  const [title, setTitle] = useState([]);
 
-    useEffect(() => {
-        fetch(URL)
-        .then((response) => response.json())
-        .then((json) => setName(json))
-        .catch((error) => console.log(error));
-    }, [])
-
-    useEffect(() => {
-
-    
-            fetch(URL2)
-            .then((response) => response.json())
-            .then((json) => setTitle(json))
-            .catch((error) => console.log(error))
-        
-        }, [])
-       
-
+  
 
    // console.log(term);
 
@@ -169,7 +150,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export { theTitle };
+// export { theTitle };
 // <Search title={title} />
 
 /*   <FlatList 
