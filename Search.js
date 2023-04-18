@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity, Button, Modal} from "react-native";
+import { StyleSheet, TextInput, View, Text, TouchableWithoutFeedback, TouchableOpacity, Button, Modal} from "react-native";
 import {  useState, useEffect, useContext  } from "react";
 import theTitle from './Posts'
 import { NavigationContainer } from '@react-navigation/native';
@@ -94,35 +94,60 @@ let obj;
    }
     const result = filterFunction(title);
     // console.log(e);
-
+   const DismissModal = () => {
+        setModelVal(false);
+   }
  
    // console.log(b);
 
     return (
       <>
         
-       <View style={[styles.pop, ModelVal ? {opacity: 0.2}: '']} >
-    <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
+       
+   
+       
+            <View style={[styles.pop, ModelVal ? {opacity: 0.5}: '']}>
+            <TouchableWithoutFeedback>
+                <View>
+                <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
                 <Text style={styles.clickMeBtn}>Click me!</Text>
          </TouchableOpacity>
+     
+      <View>  
         <Modal
-            animationType="none"
-            transparent={true}
-            visible={ModelVal}
-            onRequestClose={() => setModelVal(!ModelVal)}
-        >
-            <View style={styles.popup}>
-                <Text style={styles.modalText}>
-                    Hi! This is a Modal
-                </Text>
+        animationType="none"
+        transparent={true}
+        visible={ModelVal}
+        onRequestClose={() => setModelVal(false)}
+       // onBackdropPress = {() => setModelVal(false)}
+    >
+        <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
+            <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback>
+     
+       <View style={styles.popup}>
+            <Text style={styles.alertText}>Connect "Devices" on "Things"</Text>
+            <Text style={styles.modalText}>
+                Please make sure the 'Device' is physically installed on the 'Thing'. And the 'Device' is on. Press "Continue" to proceed further.
+            </Text>
 
-               <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>
-                <Text style={styles.popCloseBtn}>Close</Text>           
-               </TouchableOpacity>
-               
-            </View>
-            
-            </Modal>
+           <View style={styles.buttonView}>
+           <TouchableOpacity  style={styles.buttonContainerCon}>              
+                <Text style={styles.popContinueBtn}>Continue</Text>            
+           </TouchableOpacity>
+           <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>              
+                <Text style={styles.popCloseBtn}>Cancel</Text>            
+           </TouchableOpacity>
+           </View>
+           
+        </View>
+     
+        
+        
+        </Modal>
+       </View>
+      
+       
      
 
 
@@ -135,9 +160,10 @@ let obj;
       {result}
  </Text>
   </View>
-           
-    </View>
-       
+                </View>
+            </TouchableWithoutFeedback>
+            </View>
+
     
       </>
     )
@@ -159,6 +185,24 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         textTransform: 'lowercase'
     },
+    buttonView: {
+        flexDirection: 'row',
+        marginTop: 15,
+       
+    },
+    modalOverlay: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    alertText: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            marginBottom: 10,
+            paddingHorizontal: 10,
+    },
 
     resultText: {
         fontStyle: 'italic',
@@ -176,41 +220,70 @@ const styles = StyleSheet.create({
         fontFamily: 'Arial',
     },
     modalText: {
-        fontWeight: 'bold',
+        fontWeight: 500,
+        fontSize: 12,
+        marginBottom: -15,
+        color: 'gray',
+        paddingHorizontal: 6,
         
 
     },
     buttonContainer: {
-        marginTop: 35,
+        marginTop: 30,
         elevation: 8,
-        backgroundColor: "#009688",
+        backgroundColor: "#112766",
         borderRadius: 20,
         paddingVertical: 10,
         paddingHorizontal: 15, 
-        marginBottom: -20,
+        marginBottom: 2,
+       marginLeft: 10,
       },
 
-    popCloseBtn : {
-        color: 'black',
+      buttonContainerCon: {
+        marginTop: 30,
+        elevation: 8,
+        borderColor: "#112766",
+        borderRadius: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 15, 
+        marginBottom: 2,
+        borderWidth: 1,
+        marginRight: 10,
+      },
+
+      popContinueBtn : {
+        color: '#112766',
         fontWeight: 'bold',
         borderRadius: 5,
-        alignSelf: 'center',
         fontFamily: 'Arial',
+        paddingHorizontal: 15,
+        
+    },
+
+    popCloseBtn : {
+        color: 'white',
+        fontWeight: 'bold',
+        borderRadius: 5,
+        paddingHorizontal: 20,
+        fontFamily: 'Arial',
+
+        
     },
 
     popup : {
         alignItems: 'center',
-        borderColor: "#ccc",
+        borderColor: "white",
         justifyContent: 'center',
-        backgroundColor: 'white',
-        marginTop: 280,
-        width: 190,
-        height: 130,
+       // backgroundColor: '#f3f2f0',
+       backgroundColor: 'white',
+        marginTop: 250,
+        width: 300,
+        height: 180,
         padding: 1,
-        borderRadius: 1,
-        marginHorizontal: 100,
-        borderColor: 'black',
-        borderWidth: 1.5,
+        borderRadius: 6,
+        marginHorizontal: 35,
+      //  borderColor: 'black',
+        borderWidth: 1,
     },
   
     Result:{
@@ -272,3 +345,5 @@ export default Search;
 /* 
         style={styles.titleStyle}
 */
+
+// {'\n'}
