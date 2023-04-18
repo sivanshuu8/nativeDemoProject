@@ -1,9 +1,10 @@
-import { StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity} from "react-native";
+import { StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity, Button, Modal} from "react-native";
 import {  useState, useEffect, useContext  } from "react";
 import theTitle from './Posts'
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import UserContext from "./userContext";
+import babelConfig from "./babel.config";
 
 
 
@@ -13,6 +14,8 @@ const Search = ( {route} ) => {
 
     //context data from App.js 
     const { name, title } = useContext(UserContext);
+    const [ModelVal, setModelVal] = useState(false);
+    
     const gettingUserVal = name.map((v) => {
         return v;
     })
@@ -58,17 +61,14 @@ let obj2;
                     });
                     return <View>
                         <Text style={styles.Result}>
-                          <Text style={styles.key}>userName: </Text>{newVal2}
+                          <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{newVal2}</Text>
                         </Text>
                     </View>
                 }
             }
         }
 }
-
- // newFunction(title, cc)
-
-        
+  
   
 let obj;
 // function to match the user input with the data set and displaying the result
@@ -83,9 +83,9 @@ let obj;
             return Object.entries(obj).map(([key, val]) => {
                 return(
                     <View key={key}>
-                        <Text style={styles.Result}>
+                        <Text style={styles.Result} >
                             <Text style={styles.key}>{key}
-                            </Text> : {val}</Text>
+                            </Text> : <Text style={styles.resultText}>{val}</Text></Text>
                     </View>
                 )
             });
@@ -100,15 +100,45 @@ let obj;
 
     return (
       <>
-       <Text style={styles.searchedResult}>
-        The result you selected is :{selectedValue}
-       </Text>
-            {newFunction(title, gettingUserVal)}
-        <View>
-        <Text >
-            {result}
-       </Text>
-        </View>
+        
+       <View style={[styles.pop, ModelVal ? {opacity: 0.2}: '']} >
+    <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
+                <Text style={styles.clickMeBtn}>Click me!</Text>
+         </TouchableOpacity>
+        <Modal
+            animationType="none"
+            transparent={true}
+            visible={ModelVal}
+            onRequestClose={() => setModelVal(!ModelVal)}
+        >
+            <View style={styles.popup}>
+                <Text style={styles.modalText}>
+                    Hi! This is a Modal
+                </Text>
+
+               <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>
+                <Text style={styles.popCloseBtn}>Close</Text>           
+               </TouchableOpacity>
+               
+            </View>
+            
+            </Modal>
+     
+
+
+ <Text style={styles.searchedResult}>
+  The result you selected is :{selectedValue}
+ </Text>
+      {newFunction(title, gettingUserVal)}
+  <View>
+  <Text >
+      {result}
+ </Text>
+  </View>
+           
+    </View>
+       
+    
       </>
     )
         
@@ -118,8 +148,9 @@ let obj;
 }
 
 const styles = StyleSheet.create({
+
     SearchBar: {
-        backgroundColor: '#7c7b7a',
+        backgroundColor: '#7c7b7a', 
         height: 50,
         alignSelf: 'stretch',
         padding: 10,
@@ -128,17 +159,76 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         textTransform: 'lowercase'
     },
-    Result:{
-        marginTop: 15,
-        backgroundColor: '#fff',
-        fontSize: 15,
+
+    resultText: {
+        fontStyle: 'italic',
+    },
+
+    clickMeContainer: {
         alignSelf: 'center',
+          marginTop: 10,
+    },
+
+    clickMeBtn: {
+        fontWeight: 'bold',
+        fontSize: 14,
+        fontStyle: "italic",
+        fontFamily: 'Arial',
+    },
+    modalText: {
+        fontWeight: 'bold',
+        
+
+    },
+    buttonContainer: {
+        marginTop: 35,
+        elevation: 8,
+        backgroundColor: "#009688",
+        borderRadius: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 15, 
+        marginBottom: -20,
+      },
+
+    popCloseBtn : {
+        color: 'black',
+        fontWeight: 'bold',
+        borderRadius: 5,
+        alignSelf: 'center',
+        fontFamily: 'Arial',
+    },
+
+    popup : {
+        alignItems: 'center',
+        borderColor: "#ccc",
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        marginTop: 280,
+        width: 190,
+        height: 130,
+        padding: 1,
+        borderRadius: 1,
+        marginHorizontal: 100,
+        borderColor: 'black',
+        borderWidth: 1.5,
+    },
+  
+    Result:{
+        
+        fontFamily: 'Cochin',
+        fontWeight: 'bold',
+        marginTop: 15,
+       // backgroundColor: '#fff',
+        fontSize: 16,
+        alignSelf: 'flex-start',
         marginHorizontal:15,
         padding: 5,
-        borderColor: 'black',
-        borderWidth: 0.3,
+       // borderColor: 'black',
+       // borderWidth: 0.3,
         color: 'black',
         borderRadius: 3,
+        //alignItems: 'center',
+        flexWrap: 'wrap',
     },
     SearchContainer: {
         marginTop: 10,
@@ -158,7 +248,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     key : {
-        fontSize:17,
+        fontSize:20,
         color: 'blue',
     }
 

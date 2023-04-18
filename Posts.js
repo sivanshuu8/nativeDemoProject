@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { useState, useEffect, useContext} from "react";
 import { createContext } from "react";
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,7 +50,8 @@ export default Posts = ({ navigation }) => {
    // console.log(term);
 
     return(
-            <View style={styles.SearchContainer}>
+            <ScrollView style={styles.scroll}>
+                <View style={styles.SearchContainer}>
                 <TextInput
                  placeholder="Search" 
                  style={styles.SearchBar} 
@@ -104,6 +105,7 @@ export default Posts = ({ navigation }) => {
              
                          
             </View>         
+            </ScrollView>
        
     )
 }
@@ -138,6 +140,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
+    scroll : {
+       // backgroundColor: ,
+    },
     SearchBar: {
         backgroundColor: '#fff',
         height: 50,
@@ -146,7 +151,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         borderRadius: 10,
         marginHorizontal: 15,
-        textTransform: 'lowercase'
+        textTransform: 'lowercase',
+      //  color:"",
+       
     }
 })
 
