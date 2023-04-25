@@ -1,177 +1,117 @@
-import { StyleSheet, TextInput, View, Text, TouchableWithoutFeedback, TouchableOpacity, Button, Modal} from "react-native";
-import {  useState, useEffect, useContext  } from "react";
-import theTitle from './Posts'
-import { NavigationContainer } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity, Modal} from "react-native";
+import {  useState, useContext  } from "react";
 import UserContext from "./userContext";
-import babelConfig from "./babel.config";
 
 
-
-// const URL2 = "https://jsonplaceholder.typicode.com/posts";
-
-const Search = ( {route} ) => {
+const Search = ( {route, navigation} ) => {
 
     //context data from App.js 
-    const { name, title } = useContext(UserContext);
+    const { name, postDetailObj } = useContext(UserContext);
     const [ModelVal, setModelVal] = useState(false);
-    
-    const gettingUserVal = name.map((v) => {
-        return v;
+   // console.log(postDetailObj);
+    const gettingUserVal = name.map((el) => {
+        return el;
     })
 
-    /* const tester = title.map((v) => {
-        return v;
+    const postData = postDetailObj.map((el) => {
+        return el;
     })
-   // console.log(tester); */
 
-
-   /*
-         const ccc = cc.map((v) => {
-        return v.id;
-    })
-   */
-    
- 
-   // console.log(cc);
-
-   // const [title, setTitle] = useState([]);
     // posts data 
     const { element } = route.params;
       const selectedValue = JSON.stringify(element);
   //  console.log(element);
-
   //User api call
  
-    //console.log(title);
-let obj2;
-//function to match the user input to posts api and then to user api to get username
-    const newFunction = (title, gettingUserVal) => {
-        for(i=0; i<title.length; i++){
-            for(j=0; j<gettingUserVal.length; j++){
-                if(title[i].title === element){
-                    obj2 = title[i];
-                 const newVal = gettingUserVal.map((v) => {
-                        if(obj2.userId === v.id){
-                            return v.username;
-                        }
-                    })
-                    const newVal2 = newVal.filter((el) => {
-                        return el !== undefined
-                    });
-                    return <View>
-                        <Text style={styles.Result}>
-                          <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{newVal2}</Text>
-                        </Text>
-                    </View>
-                }
-            }
-        }
-}
-  
-  
-let obj;
-// function to match the user input with the data set and displaying the result
-   const filterFunction = function x(title) {
-    for(i=0; i < title.length ; i++){
-
-        if(title[i].title === element){
-            console.log('true')
-            obj = title[i];
-            
-           
-            return Object.entries(obj).map(([key, val]) => {
-                return(
-                    <View key={key}>
-                        <Text style={styles.Result} >
-                            <Text style={styles.key}>{key}
-                            </Text> : <Text style={styles.resultText}>{val}</Text></Text>
-                    </View>
-                )
-            });
-        }
-    }
-   }
-    const result = filterFunction(title);
-    // console.log(e);
-   const DismissModal = () => {
-        setModelVal(false);
-   }
  
-   // console.log(b);
+    const displayName = () => {
+              const searchedPostDetail = postData.find(el => el.title === element)
+        //console.log(searchedPostDetail.userId)
+                const user = gettingUserVal.find(el => searchedPostDetail.userId === el.id)   
+        return(
+                <View>
+                     <Text style={styles.Result}>
+                          <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{user.username}</Text>
+                    </Text>
+                 </View>
+             );     
+    }
+  
+    //console.log(a());
+//const searchedPostDetail = postData.find(el => el.title === element)
+
+        const displayPostData = () => {
+            const searchedPostDetail = postData.find(el => el.title === element)
+
+            return (
+                    <View>
+                            <Text style={styles.Result}>
+                                <Text style={styles.key}>Title</Text> : <Text style={styles.resultText}>{searchedPostDetail.title}</Text>{'\n'}{'\n'}
+                                <Text style={styles.key}>Id</Text> : <Text>{searchedPostDetail.id}</Text>{'\n'}{'\n'}
+                                <Text style={styles.key}>Body</Text> : <Text>{searchedPostDetail.body}</Text>{'\n'}{'\n'}
+                                <Text style={styles.key}>User Id</Text> : <Text>{searchedPostDetail.userId}</Text>{'\n'}{'\n'}
+                            </Text>
+                    </View>
+                );    
+        }
+        
 
     return (
       <>
-        
        
-   
-       
-            <View style={[styles.pop, ModelVal ? {opacity: 0.5}: '']}>
-            <TouchableWithoutFeedback>
-                <View>
-                <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
-                <Text style={styles.clickMeBtn}>Click me!</Text>
-         </TouchableOpacity>
-     
-      <View>  
-        <Modal
-        animationType="none"
-        transparent={true}
-        visible={ModelVal}
-        onRequestClose={() => setModelVal(false)}
-       // onBackdropPress = {() => setModelVal(false)}
-    >
-        <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
-            <View style={styles.modalOverlay} />
-        </TouchableWithoutFeedback>
-     
-       <View style={styles.popup}>
-            <Text style={styles.alertText}>Connect "Devices" on "Things"</Text>
-            <Text style={styles.modalText}>
-                Please make sure the 'Device' is physically installed on the 'Thing'. And the 'Device' is on. Press "Continue" to proceed further.
-            </Text>
-
-           <View style={styles.buttonView}>
-           <TouchableOpacity  style={styles.buttonContainerCon}>              
-                <Text style={styles.popContinueBtn}>Continue</Text>            
-           </TouchableOpacity>
-           <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>              
-                <Text style={styles.popCloseBtn}>Cancel</Text>            
-           </TouchableOpacity>
-           </View>
+     <View style={[styles.pop, ModelVal ? {opacity: 0.5}: '']}>
            
-        </View>
+         <View>
+                <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
+                     <Text style={styles.clickMeBtn}>Click me!</Text>
+                 </TouchableOpacity>
      
-        
-        
-        </Modal>
-       </View>
-      
-       
+                <View>  
+                    <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={ModelVal}
+                    onRequestClose={() => setModelVal(false)}
+       // onBackdropPress = {() => setModelVal(false)}
+                    >
+                        <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
+                            <View style={styles.modalOverlay} />
+                        </TouchableWithoutFeedback>
      
+                       <View style={styles.popup}>
+                            <Text style={styles.alertText}>Connect "Device" on "Thing"</Text>
+                             <Text style={styles.modalText}>
+                                Please make sure the 'Device' is physically installed on the 'Thing'. And the 'Device' is on. Press "Continue" to proceed further.
+                            </Text>
 
-
- <Text style={styles.searchedResult}>
-  The result you selected is :{selectedValue}
- </Text>
-      {newFunction(title, gettingUserVal)}
-  <View>
-  <Text >
-      {result}
- </Text>
-  </View>
+                            <View style={styles.buttonView}>
+                                <TouchableOpacity  style={styles.buttonContainerCon} onPress = {() => {navigation.navigate('Posts')} }>              
+                                    <Text style={styles.popContinueBtn}>Continue</Text>            
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>              
+                                     <Text style={styles.popCloseBtn}>Cancel</Text>            
+                                 </TouchableOpacity>
+                            </View> 
+                        </View>          
+                    </Modal>
                 </View>
-            </TouchableWithoutFeedback>
-            </View>
+      
+                    <Text style={styles.searchedResult}>
+                        The result you selected is :{selectedValue}
+                    </Text>
+                         {displayName()}
+                <View>
+                    <Text >
+                         {displayPostData()}
+                    </Text>
+                 </View>
+         </View>    
+    </View>    
 
-    
       </>
     )
-        
-           
-        
-    
 }
+// {displayUserData(postData, gettingUserVal)}
 
 const styles = StyleSheet.create({
 
@@ -199,7 +139,7 @@ const styles = StyleSheet.create({
     },
     alertText: {
             fontSize: 18,
-            fontWeight: 'bold',
+            fontWeight: 600,
             marginBottom: 10,
             paddingHorizontal: 10,
     },
@@ -224,13 +164,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginBottom: -15,
         color: 'gray',
-        paddingHorizontal: 6,
+        paddingHorizontal: 20,
         
 
     },
     buttonContainer: {
         marginTop: 30,
-        elevation: 8,
+      //  elevation: 8,
         backgroundColor: "#112766",
         borderRadius: 20,
         paddingVertical: 10,
@@ -241,7 +181,7 @@ const styles = StyleSheet.create({
 
       buttonContainerCon: {
         marginTop: 30,
-        elevation: 8,
+       // elevation: 8,
         borderColor: "#112766",
         borderRadius: 20,
         paddingVertical: 10,
@@ -256,7 +196,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         borderRadius: 5,
         fontFamily: 'Arial',
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         
     },
 
@@ -327,9 +267,6 @@ const styles = StyleSheet.create({
 
 })
 
-/*  const { id } = val;
-            return id; */
-
 export default Search;
 
 /*
@@ -347,3 +284,106 @@ export default Search;
 */
 
 // {'\n'}
+
+/*  ----Long name filtering function --------
+            let postTitleObj;
+//function to match the user input to posts api and then to user api to get username
+  //  const displayUserData = (postData, gettingUserVal) => {
+   //     for(i=0; i<postData.length; i++){
+    //        for(j=0; j<gettingUserVal.length; j++){
+     //           if(postData[i].title === element){
+     //               postTitleObj = postData[i];
+     //            const calcValue = gettingUserVal.map((v) => {
+      //                  if(postTitleObj.userId === v.id){
+       //                     return v.username;
+       //                 }
+       //             })
+       //             const displayValue = calcValue.filter((el) => {
+       //                 return el !== undefined
+       //             });
+        //            return <View>
+          //              <Text style={styles.Result}>
+         //                 <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{displayValue}</Text>
+          //              </Text>
+          //          </View>
+          //      }
+         //   }
+      //  }
+// }
+*/
+
+/*  ---- post and search item filter long function 
+
+            //let obj;
+// function to match the user input with the data set and displaying the result
+   //const filterFunction = function x(postData) {
+  //  for(i=0; i < postData.length ; i++){
+
+   //     if(postData[i].title === element){
+    //        console.log('true')
+     //       obj = postData[i];
+            
+           
+       //     return Object.entries(obj).map(([key, val]) => {
+       //         return(
+        //            <View key={key}>
+         //               <Text style={styles.Result} >
+         //                   <Text style={styles.key}>{key}
+         //                   </Text> : <Text style={styles.resultText}>{val}</Text></Text>
+         //           </View>
+         //       )
+       //     });
+      //  }
+   // }
+  // }
+  // const result = filterFunction(postData);
+
+*/
+
+/*  const { id } = val;
+            return id; */
+
+            /* modified filter functino
+                   const filterPostData = () => postData.filter((val) => {
+                    if(val.title === element) {
+                    return val;
+                    }
+    }).map(({title, id, body, userId}) => {
+        return(
+            <View>
+                <Text style={styles.Result}>
+                    <Text style={styles.key}>Title</Text> : <Text style={styles.resultText}>{title}</Text>{'\n'}{'\n'}
+                    <Text style={styles.key}>Id</Text> : <Text>{id}</Text>{'\n'}{'\n'}
+                    <Text style={styles.key}>Body</Text> : <Text>{body}</Text>{'\n'}{'\n'}
+                    <Text style={styles.key}>User Id</Text> : <Text>{userId}</Text>{'\n'}{'\n'}
+                </Text>
+            </View>
+    )
+});
+            */
+
+/*
+           const displayName = () => {
+            const filteredPostData = postData.filter((el) => {
+                      if(el.title === element){
+                           return el
+                 }
+            })
+            const mapedPostData = filteredPostData.map((el) => el);        
+            const usernameFilter = gettingUserVal.filter((el) => {
+                
+                        if(mapedPostData[0].userId === el.id){
+                   //     console.log(el.username);
+                        return el.username;
+                 }           
+        })
+        return(
+                <View>
+                     <Text style={styles.Result}>
+                     <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{usernameFilter[0].username}</Text>
+                    </Text>
+                </View>
+        )
+        
+    }
+*/
