@@ -1,266 +1,268 @@
-import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity, Modal} from "react-native";
-import {  useState, useContext  } from "react";
-import UserContext from "./userContext";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import {useState, useContext} from 'react';
+import UserContext from './userContext';
 
+const Search = ({route, navigation}) => {
+  const {name, postDetailObj} = useContext(UserContext);
 
-const Search = ( {route, navigation} ) => {
+  const [ModelVal, setModelVal] = useState(false);
 
-    const { name, postDetailObj } = useContext(UserContext);
+  const gettingUserData = name.map(el => {
+    return el;
+  });
 
-    const [ModelVal, setModelVal] = useState(false);
-   
-    const gettingUserData = name.map((el) => {
-        return el;
-    })
+  const gettingPostData = postDetailObj.map(el => {
+    return el;
+  });
 
-    const gettingPostData = postDetailObj.map((el) => {
-        return el;
-    })
+  const {element} = route.params;
+  const selectedValue = JSON.stringify(element);
 
-    
-    const { element } = route.params;
-    const selectedValue = JSON.stringify(element);
-  
- 
-    const searchedPostDetail = gettingPostData.find(el => el.title === element)
+  const searchedPostDetail = gettingPostData.find(el => el.title === element);
 
-    const displayName = () => {
-                
-                const user = gettingUserData.find(el => searchedPostDetail.userId === el.id)   
-        return(
-                <View>
-                     <Text style={styles.Result}>
-                          <Text style={styles.key}>Username: </Text><Text style={styles.resultText}>{user.username}</Text>
-                    </Text>
-                 </View>
-             );     
-    }
-  
-
-
-     const displayPostData = () => {
-            
-            return (
-                    <View>
-                            <Text style={styles.Result}>
-                                <Text style={styles.key}>Title</Text> : <Text style={styles.resultText}>{searchedPostDetail.title}</Text>{'\n'}{'\n'}
-                                <Text style={styles.key}>Id</Text> : <Text>{searchedPostDetail.id}</Text>{'\n'}{'\n'}
-                                <Text style={styles.key}>Body</Text> : <Text>{searchedPostDetail.body}</Text>{'\n'}{'\n'}
-                                <Text style={styles.key}>User Id</Text> : <Text>{searchedPostDetail.userId}</Text>{'\n'}{'\n'}
-                            </Text>
-                    </View>
-                );    
-        }
-        
-
+  const displayName = () => {
+    const user = gettingUserData.find(
+      el => searchedPostDetail.userId === el.id,
+    );
     return (
-      <>
-       
-     <View style={[styles.pop, ModelVal ? {opacity: 0.5}: '']}>
-           
-         <View>
-                <TouchableOpacity onPress={() => setModelVal(true)} style={styles.clickMeContainer}>
-                     <Text style={styles.clickMeBtn}>Click me!</Text>
-                 </TouchableOpacity>
-     
-                <View>  
-                    <Modal
-                    animationType="none"
-                    transparent={true}
-                    visible={ModelVal}
-                    onRequestClose={() => setModelVal(false)}
-                    >
-                        <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
-                            <View style={styles.modalOverlay} />
-                        </TouchableWithoutFeedback>
-     
-                       <View style={styles.popup}>
-                            <Text style={styles.alertText}>Connect "Device" on "Thing"</Text>
-                             <Text style={styles.modalText}>
-                                Please make sure the 'Device' is physically installed on the 'Thing'. And the 'Device' is on. Press "Continue" to proceed further.
-                            </Text>
+      <View>
+        <Text style={styles.Result}>
+          <Text style={styles.key}>Username: </Text>
+          <Text style={styles.resultText}>{user.username}</Text>
+        </Text>
+      </View>
+    );
+  };
 
-                            <View style={styles.buttonView}>
-                                <TouchableOpacity  style={styles.buttonContainerCon} onPress = {() => {navigation.navigate('Posts')} }>              
-                                    <Text style={styles.popContinueBtn}>Continue</Text>            
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => setModelVal(false)} style={styles.buttonContainer}>              
-                                     <Text style={styles.popCloseBtn}>Cancel</Text>            
-                                 </TouchableOpacity>
-                            </View> 
-                        </View>          
-                    </Modal>
+  const displayPostData = () => {
+    return (
+      <View>
+        <Text style={styles.Result}>
+          <Text style={styles.key}>Title</Text> :{' '}
+          <Text style={styles.resultText}>{searchedPostDetail.title}</Text>{' '}
+          {'\n'} {'\n'}
+          <Text style={styles.key}>Id</Text> :{' '}
+          <Text>{searchedPostDetail.id}</Text> {'\n'} {'\n'}
+          <Text style={styles.key}>Body</Text> :{' '}
+          <Text>{searchedPostDetail.body}</Text> {'\n'} {'\n'}
+          <Text style={styles.key}>User Id</Text> :{' '}
+          <Text>{searchedPostDetail.userId}</Text>
+        </Text>
+      </View>
+    );
+  };
+
+  return (
+    <>
+      <View style={[styles.pop, ModelVal ? {opacity: 0.5} : '']}>
+        <View>
+          <TouchableOpacity
+            onPress={() => setModelVal(true)}
+            style={styles.clickMeContainer}>
+            <Text style={styles.clickMeBtn}>Click me!</Text>
+          </TouchableOpacity>
+
+          <View>
+            <Modal
+              animationType="none"
+              transparent={true}
+              visible={ModelVal}
+              onRequestClose={() => setModelVal(false)}>
+              <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
+                <View style={styles.modalOverlay} />
+              </TouchableWithoutFeedback>
+
+              <View style={styles.popup}>
+                <Text style={styles.alertText}>
+                  Connect "Device" on "Thing"
+                </Text>
+                <Text style={styles.modalText}>
+                  Please make sure the 'Device' is physically installed on the
+                  'Thing'. And the 'Device' is on. Press "Continue" to proceed
+                  further.
+                </Text>
+
+                <View style={styles.buttonView}>
+                  <TouchableOpacity
+                    style={styles.buttonContainerCon}
+                    onPress={() => {
+                      navigation.navigate('Posts');
+                    }}>
+                    <Text style={styles.popContinueBtn}>Continue</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setModelVal(false)}
+                    style={styles.buttonContainer}>
+                    <Text style={styles.popCloseBtn}>Cancel</Text>
+                  </TouchableOpacity>
                 </View>
-      
-                    <Text style={styles.searchedResult}>
-                        The result you selected is :{selectedValue}
-                    </Text>
-                         {displayName()}
-                <View>
-                    <Text >
-                         {displayPostData()}
-                    </Text>
-                 </View>
-         </View>    
-    </View>    
+              </View>
+            </Modal>
+          </View>
 
-      </>
-    )
-}
+          <Text style={styles.searchedResult}>
+            The result you selected is :{selectedValue}
+          </Text>
+          {displayName()}
+          <View>
+            <Text>{displayPostData()}</Text>
+          </View>
+        </View>
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
+  SearchBar: {
+    backgroundColor: '#7c7b7a',
+    height: 50,
+    alignSelf: 'stretch',
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 10,
+    marginHorizontal: 15,
+    textTransform: 'lowercase',
+  },
+  buttonView: {
+    flexDirection: 'row',
+    marginTop: 15,
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  alertText: {
+    fontSize: 18,
+    fontWeight: 600,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
 
-    SearchBar: {
-        backgroundColor: '#7c7b7a', 
-        height: 50,
-        alignSelf: 'stretch',
-        padding: 10,
-        fontSize: 20,
-        borderRadius: 10,
-        marginHorizontal: 15,
-        textTransform: 'lowercase'
-    },
-    buttonView: {
-        flexDirection: 'row',
-        marginTop: 15,
-       
-    },
-    modalOverlay: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    alertText: {
-            fontSize: 18,
-            fontWeight: 600,
-            marginBottom: 10,
-            paddingHorizontal: 10,
-    },
+  resultText: {
+    fontStyle: 'italic',
+  },
 
-    resultText: {
-        fontStyle: 'italic',
-    },
+  clickMeContainer: {
+    alignSelf: 'center',
+    marginTop: 10,
+  },
 
-    clickMeContainer: {
-        alignSelf: 'center',
-          marginTop: 10,
-    },
+  clickMeBtn: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    fontStyle: 'italic',
+    fontFamily: 'Arial',
+  },
+  modalText: {
+    fontWeight: 500,
+    fontSize: 12,
+    marginBottom: -15,
+    color: 'gray',
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    marginTop: 30,
+    //  elevation: 8,
+    backgroundColor: '#112766',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginBottom: 2,
+    marginLeft: 10,
+  },
 
-    clickMeBtn: {
-        fontWeight: 'bold',
-        fontSize: 14,
-        fontStyle: "italic",
-        fontFamily: 'Arial',
-    },
-    modalText: {
-        fontWeight: 500,
-        fontSize: 12,
-        marginBottom: -15,
-        color: 'gray',
-        paddingHorizontal: 20,
-        
+  buttonContainerCon: {
+    marginTop: 30,
+    // elevation: 8,
+    borderColor: '#112766',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginBottom: 2,
+    borderWidth: 1,
+    marginRight: 10,
+  },
 
-    },
-    buttonContainer: {
-        marginTop: 30,
-      //  elevation: 8,
-        backgroundColor: "#112766",
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 15, 
-        marginBottom: 2,
-       marginLeft: 10,
-      },
+  popContinueBtn: {
+    color: '#112766',
+    fontWeight: 'bold',
+    borderRadius: 5,
+    fontFamily: 'Arial',
+    paddingHorizontal: 10,
+  },
 
-      buttonContainerCon: {
-        marginTop: 30,
-       // elevation: 8,
-        borderColor: "#112766",
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 15, 
-        marginBottom: 2,
-        borderWidth: 1,
-        marginRight: 10,
-      },
+  popCloseBtn: {
+    color: 'white',
+    fontWeight: 'bold',
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    fontFamily: 'Arial',
+  },
 
-      popContinueBtn : {
-        color: '#112766',
-        fontWeight: 'bold',
-        borderRadius: 5,
-        fontFamily: 'Arial',
-        paddingHorizontal: 10,
-        
-    },
+  popup: {
+    alignItems: 'center',
+    borderColor: 'white',
+    justifyContent: 'center',
+    // backgroundColor: '#f3f2f0',
+    backgroundColor: 'white',
+    marginTop: 250,
+    width: 300,
+    height: 180,
+    padding: 1,
+    borderRadius: 6,
+    marginHorizontal: 35,
+    //  borderColor: 'black',
+    borderWidth: 1,
+  },
 
-    popCloseBtn : {
-        color: 'white',
-        fontWeight: 'bold',
-        borderRadius: 5,
-        paddingHorizontal: 20,
-        fontFamily: 'Arial',
-
-        
-    },
-
-    popup : {
-        alignItems: 'center',
-        borderColor: "white",
-        justifyContent: 'center',
-       // backgroundColor: '#f3f2f0',
-       backgroundColor: 'white',
-        marginTop: 250,
-        width: 300,
-        height: 180,
-        padding: 1,
-        borderRadius: 6,
-        marginHorizontal: 35,
-      //  borderColor: 'black',
-        borderWidth: 1,
-    },
-  
-    Result:{
-        
-        fontFamily: 'Cochin',
-        fontWeight: 'bold',
-        marginTop: 15,
-       // backgroundColor: '#fff',
-        fontSize: 16,
-        alignSelf: 'flex-start',
-        marginHorizontal:15,
-        padding: 5,
-       // borderColor: 'black',
-       // borderWidth: 0.3,
-        color: 'black',
-        borderRadius: 3,
-        //alignItems: 'center',
-        flexWrap: 'wrap',
-    },
-    SearchContainer: {
-        marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'flex-start'
-    },
-    titleStyle:{
-        padding: 4,
-        backgroundColor: 'white',
-        margin: 2,
-       
-        
-        },
-    searchedResult: {
-        marginBottom: 15,
-        marginTop: 10,
-        alignSelf: 'center'
-    },
-    key : {
-        fontSize:20,
-        color: 'blue',
-    }
-
-})
+  Result: {
+    fontFamily: 'Cochin',
+    fontWeight: 'bold',
+    marginTop: 15,
+    // backgroundColor: '#fff',
+    fontSize: 16,
+    alignSelf: 'flex-start',
+    marginHorizontal: 15,
+    padding: 5,
+    // borderColor: 'black',
+    // borderWidth: 0.3,
+    color: 'black',
+    borderRadius: 3,
+    //alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  SearchContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  titleStyle: {
+    padding: 4,
+    backgroundColor: 'white',
+    margin: 2,
+  },
+  searchedResult: {
+    marginBottom: 15,
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+  key: {
+    fontSize: 20,
+    color: 'blue',
+  },
+});
 
 export default Search;
 
@@ -338,7 +340,7 @@ export default Search;
 /*  const { id } = val;
             return id; */
 
-            /* modified filter functino
+/* modified filter functino
                    const filterPostData = () => postData.filter((val) => {
                     if(val.title === element) {
                     return val;

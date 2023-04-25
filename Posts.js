@@ -1,161 +1,124 @@
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, TextInput, ScrollView } from "react-native";
-import { useState, useEffect, useContext} from "react";
-import { createContext } from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Search from "./Search";
-import UserContext from "./userContext";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from 'react-native';
+import {useState, useContext} from 'react';
 
-
+import UserContext from './userContext';
 
 //const theTitle = createContext();
 
+export default Posts = ({navigation}) => {
+  //user search data
+  const [term, setTerm] = useState('');
 
-export default Posts = ({ navigation }) => {
-
-    //user search data
-    const [term, setTerm] = useState('');
-
-    const { name, title } = useContext(UserContext);
-    // Posts and User api data
+  const {postDetailObj} = useContext(UserContext);
+  // Posts and User api data
   //  const [name, setName] = useState([]);
   //  const [title, setTitle] = useState([]);
 
-  
+  // console.log(term);
 
-   // console.log(term);
+  // saving post api data in a variable
+  const postDetail = postDetailObj.map(values => {
+    const {title} = values;
 
-   // saving post api data in a variable 
-    const post = title.map((titlee) => {
-        const {title} = titlee;
-        
-        return title;
-        
-    })
+    return title;
+  });
 
-    // fn for testing 
-    const displayName = name.map((val) => {
-            const { username } = val;
-            return <View style={styles.userName}>
-                <Text>
-                    {username}
-                </Text>
-            </View>
-    })
-
-   
-
-
-    //console.log(name)
-   // console.log(term);
-
-    return(
-            <ScrollView style={styles.scroll}>
-                <View style={styles.SearchContainer}>
-                <TextInput
-                 placeholder="Search" 
-                 style={styles.SearchBar} 
-                 autoCorrect={false}
-                 autoCapitalize="none"
-                 onChangeText={(text) => { setTimeout(() => {
-                    setTerm(text);
-                 }, 500)}}
-                />
-                <View  key={post.id}>
-
-                {
-                    post.filter((val) => {
-                        //console.log(term);
-                        return val.toLowerCase().startsWith(term.toLowerCase());
-                    })
-                    .slice(0,20)
-                    .map((el) =>(
-                        <TouchableOpacity 
-                        onPress={() => {
-                            const onPress = () => {
-                                
-                                
-                               return (
-                                    <>
-                                
-                                {navigation.navigate('Search', {
-                                    element: el,
-                                })}                               
-                                    </>                              
-                               )
-                            }
-                            onPress();
-                        }}
-                        >
-                            
-                        <View key={el.id} style={styles.boxes}>
-                            <Text>
-                                {el}                       
-                            </Text>
-                            
-                            
-                        </View>
-                        </TouchableOpacity>
-                    )
-                    )
-                                           
-                    }    
+  return (
+    <ScrollView style={styles.scroll}>
+      <View style={styles.SearchContainer}>
+        <TextInput
+          placeholder="Search"
+          style={styles.SearchBar}
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={text => {
+            setTimeout(() => {
+              setTerm(text);
+            }, 500);
+          }}
+        />
+        <View key={postDetail.id}>
+          {postDetail
+            .filter(val => {
+              //console.log(term);
+              return val.toLowerCase().startsWith(term.toLowerCase());
+            })
+            .slice(0, 20)
+            .map(el => (
+              <TouchableOpacity
+                onPress={() => {
+                  const onPress = () => {
+                    return (
+                      <>
+                        {navigation.navigate('Search', {
+                          element: el,
+                        })}
+                      </>
+                    );
+                  };
+                  onPress();
+                }}>
+                <View key={el.id} style={styles.boxes}>
+                  <Text>{el}</Text>
                 </View>
-
-             
-                         
-            </View>         
-            </ScrollView>
-       
-    )
-}
-
-    
+              </TouchableOpacity>
+            ))}
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#f3f3f3",
-        height: 1000,
-        marginTop: 10,
-    },
-    boxes: {
-        padding: 10,
-        margin: 10,
-        backgroundColor: "#fff",
-        alignSelf: 'stretch'
-    },
-    userName: {
-        fontSize: 20,
-        color: "#1652c9"
-    },
-    header: {
-        flex: 1,
-        alignContent: 'center',
-    },
-    Lists: {
-        marginTop: 15
-    },
-    SearchContainer: {
-        marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'flex-start'
-    },
-    scroll : {
-       // backgroundColor: ,
-    },
-    SearchBar: {
-        backgroundColor: '#fff',
-        height: 50,
-        alignSelf: 'stretch',
-        padding: 10,
-        fontSize: 20,
-        borderRadius: 10,
-        marginHorizontal: 15,
-        textTransform: 'lowercase',
-      //  color:"",
-       
-    }
-})
+  container: {
+    backgroundColor: '#f3f3f3',
+    height: 1000,
+    marginTop: 10,
+  },
+  boxes: {
+    padding: 10,
+    margin: 10,
+    backgroundColor: '#fff',
+    alignSelf: 'stretch',
+  },
+  userName: {
+    fontSize: 20,
+    color: '#1652c9',
+  },
+  header: {
+    flex: 1,
+    alignContent: 'center',
+  },
+  Lists: {
+    marginTop: 15,
+  },
+  SearchContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  scroll: {
+    // backgroundColor: ,
+  },
+  SearchBar: {
+    backgroundColor: '#fff',
+    height: 50,
+    alignSelf: 'stretch',
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 10,
+    marginHorizontal: 15,
+    textTransform: 'lowercase',
+    //  color:"",
+  },
+});
 
 // export { theTitle };
 // <Search title={title} />
@@ -180,7 +143,7 @@ const styles = StyleSheet.create({
                 }}
             /> */
 
-            /* 
+/* 
             <FlatList 
                 style={styles.Lists}
                 data={{a}}
