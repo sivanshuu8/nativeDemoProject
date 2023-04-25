@@ -23,9 +23,10 @@ const Search = ( {route, navigation} ) => {
   //  console.log(element);
   //User api call
  
- 
+  const searchedPostDetail = postData.find(el => el.title === element)
+
     const displayName = () => {
-              const searchedPostDetail = postData.find(el => el.title === element)
+              
         //console.log(searchedPostDetail.userId)
                 const user = gettingUserVal.find(el => searchedPostDetail.userId === el.id)   
         return(
@@ -41,7 +42,7 @@ const Search = ( {route, navigation} ) => {
 //const searchedPostDetail = postData.find(el => el.title === element)
 
         const displayPostData = () => {
-            const searchedPostDetail = postData.find(el => el.title === element)
+            
 
             return (
                     <View>
