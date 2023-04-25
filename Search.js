@@ -5,15 +5,15 @@ import UserContext from "./userContext";
 
 const Search = ( {route, navigation} ) => {
 
-    //context data from App.js 
     const { name, postDetailObj } = useContext(UserContext);
+
     const [ModelVal, setModelVal] = useState(false);
-   // console.log(postDetailObj);
-    const gettingUserVal = name.map((el) => {
+   
+    const gettingUserData = name.map((el) => {
         return el;
     })
 
-    const postData = postDetailObj.map((el) => {
+    const gettingPostData = postDetailObj.map((el) => {
         return el;
     })
 
@@ -23,12 +23,11 @@ const Search = ( {route, navigation} ) => {
   //  console.log(element);
   //User api call
  
-  const searchedPostDetail = postData.find(el => el.title === element)
+  const searchedPostDetail = gettingPostData.find(el => el.title === element)
 
     const displayName = () => {
-              
-        //console.log(searchedPostDetail.userId)
-                const user = gettingUserVal.find(el => searchedPostDetail.userId === el.id)   
+                //console.log(searchedPostDetail.userId)
+                const user = gettingUserData.find(el => searchedPostDetail.userId === el.id)   
         return(
                 <View>
                      <Text style={styles.Result}>
@@ -43,7 +42,6 @@ const Search = ( {route, navigation} ) => {
 
         const displayPostData = () => {
             
-
             return (
                     <View>
                             <Text style={styles.Result}>
