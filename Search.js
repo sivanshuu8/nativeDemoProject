@@ -17,16 +17,15 @@ const Search = ( {route, navigation} ) => {
         return el;
     })
 
-    // posts data 
+    
     const { element } = route.params;
-      const selectedValue = JSON.stringify(element);
-  //  console.log(element);
-  //User api call
+    const selectedValue = JSON.stringify(element);
+  
  
-  const searchedPostDetail = gettingPostData.find(el => el.title === element)
+    const searchedPostDetail = gettingPostData.find(el => el.title === element)
 
     const displayName = () => {
-                //console.log(searchedPostDetail.userId)
+                
                 const user = gettingUserData.find(el => searchedPostDetail.userId === el.id)   
         return(
                 <View>
@@ -37,10 +36,9 @@ const Search = ( {route, navigation} ) => {
              );     
     }
   
-    //console.log(a());
-//const searchedPostDetail = postData.find(el => el.title === element)
 
-        const displayPostData = () => {
+
+     const displayPostData = () => {
             
             return (
                     <View>
@@ -71,7 +69,6 @@ const Search = ( {route, navigation} ) => {
                     transparent={true}
                     visible={ModelVal}
                     onRequestClose={() => setModelVal(false)}
-       // onBackdropPress = {() => setModelVal(false)}
                     >
                         <TouchableWithoutFeedback onPress={() => setModelVal(false)}>
                             <View style={styles.modalOverlay} />
@@ -110,7 +107,6 @@ const Search = ( {route, navigation} ) => {
       </>
     )
 }
-// {displayUserData(postData, gettingUserVal)}
 
 const styles = StyleSheet.create({
 
